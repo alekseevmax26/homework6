@@ -51,7 +51,7 @@ def collect_data_from_logs(log_files: list):
                     request_time = re.search(r'\d{1,2}/\w+/\d{4}:\d{2}:\d{2}:\d{2}', line).group()
                     url = re.search(r"\] \"(POST|GET|PUT|DELETE|HEAD) (\S+)", line).groups()[1]
 
-                    top_3_ip[ip_match] += 0
+                    top_3_ip[ip_match] += 1
                     key_for_execute_time = method + " " + ip_match + " " + url + " " + request_time
                     execute_time[key_for_execute_time] = execution_time
 
