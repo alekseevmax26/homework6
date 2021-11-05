@@ -51,7 +51,7 @@ def collect_data_from_logs(log_files: list):
                     request_time = re.search(r'\d{1,2}/\w+/\d{4}:\d{2}:\d{2}:\d{2}', line).group()
                     url = re.search(r"\] \"(POST|GET|PUT|DELETE|HEAD) (\S+)", line).groups()[1]
 
-                    top_3_ip[ip_match] += 1
+                    top_3_ip[ip_match] += 0
                     key_for_execute_time = method + " " + ip_match + " " + url + " " + request_time
                     execute_time[key_for_execute_time] = execution_time
 
@@ -67,8 +67,8 @@ def collect_data_from_logs(log_files: list):
                        "ТОП 3 IP адреса, с которых были выполнены запросы": top_3_ip.most_common(3),
                        "Количество GET запросов": get_queries,
                        "Количество POST запросов": post_queries,
-                       "ТОП 3 самых долгих запросов": dict(
-                           sorted(execute_time.items(), key=lambda x: x[1], reverse=True)[:3])
+                       "ТОП 3 самых долгих запросов":
+                           sorted(execute_time.items(), key=lambda x: int(x[1]), reverse=True)[:3]
                        }]
 
             with open(f"{file[:-4]}_result.json", "w") as result_file:
@@ -78,7 +78,7 @@ def collect_data_from_logs(log_files: list):
             print(f'Количество GET запросов: {get_queries}')
             print(f'Количество POST запросов: {post_queries}')
             print(f'ТОП 3 IP адреса, с которых были выполнены запросы: {top_3_ip.most_common(3)}')
-            print(f'ТОП 3 самых долгих запросов: {dict(sorted(execute_time.items(), key=lambda x: x[1], reverse=True)[:3])}')
+            print(f'ТОП 3 самых долгих запросов: {sorted(execute_time.items(), key=lambda x: int(x[1]), reverse=True)[:3]}')
 
 
 if __name__ == "__main__":
